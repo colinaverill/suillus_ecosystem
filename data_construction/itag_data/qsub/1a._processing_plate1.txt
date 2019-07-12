@@ -32,7 +32,7 @@ module load R
 #
 #
 # in the directory specified above, invoke this function:
-Rscript data_construction/itag_data/processing_plate1.r
+Rscript data_construction/itag_data/1a._processing_plate1.r
 #
 #
 #End of commands.
