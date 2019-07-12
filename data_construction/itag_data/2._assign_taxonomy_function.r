@@ -4,7 +4,7 @@ rm(list=ls())
 library(doParallel)
 library(data.table)
 source('paths.r')
-source('NEFI_functions/tic_toc.r')
+source('functions/tic_toc.r')
 source('functions/fg_assign.r')
 
 #load SV table, set output path.----
