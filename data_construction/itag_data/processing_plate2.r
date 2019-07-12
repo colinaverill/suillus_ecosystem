@@ -11,7 +11,7 @@ library(data.table)
 library(dada2)
 
 #set input/output paths, specify primers.----
-seq.path <- '/projectnb/talbot-lab-data/caverill/suillus_eco_data/big_data/itag/EctintiTagplate1/Raw_Data/'
+seq.path <- '/projectnb/talbot-lab-data/caverill/suillus_eco_data/big_data/itag/EctintiTagplate2/Raw_Data/'
 
 #output file path.
 output_filepath1 <-  paste0(seq.path,'SV_table.rds')
