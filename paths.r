@@ -46,3 +46,10 @@ exp2_available_EMSL_tubes.path <- paste0(dir,'available_EMSL_tubes.csv')
 dir <- paste0(pecan_gen_dir,'exp.2_processed.dat/')
 system(paste0('mkdir -p ',dir))
 duke_2018_co2_workup.path <- paste0(dir,'duke_2018_co2_workup.rds')
+
+#Duke 2017 itag data.----
+    duke_exp1.p1_SV_table.path <- paste0(scc_gen_dir,'duke_exp1.p1_SV_table.rds')
+    duke_exp1.p2_SV_table.path <- paste0(scc_gen_dir,'duke_exp1.p2_SV_table.rds')
+duke_exp1_SV_table_merged.path <- paste0(scc_gen_dir,'duke_exp1_SV_table_merged.rds')
+      duke_exp1_tax_table.path <- paste0(scc_gen_dir,'duke_exp1_tax_table.rds')
+

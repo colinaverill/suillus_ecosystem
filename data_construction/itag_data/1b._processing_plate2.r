@@ -15,7 +15,7 @@ seq.path <- '/projectnb/talbot-lab-data/caverill/suillus_eco_data/big_data/itag/
 
 #output file path.
 output_filepath1 <-  paste0(seq.path,'SV_table.rds')
-#output_filepath2 <- ted_2014_SV.table.path
+output_filepath2 <- duke_exp1.p2_SV_table.path
 output_track     <-  paste0(seq.path,'track.rds')
 
 #reverse primers (there is a flex position)
@@ -155,6 +155,6 @@ seqtab.nochim <- seqtab.nochim[,nchar(colnames(seqtab.nochim)) > 99]
 cat('Saving output...\n')
 output_filepath <- paste0(seq.path,'SV_table.rds')
 saveRDS(seqtab.nochim, output_filepath1)
-#saveRDS(seqtab.nochim, output_filepath2)
+saveRDS(seqtab.nochim, output_filepath2)
 saveRDS(track        , output_track    )
 cat('Output saved, script complete.\n')
