@@ -17,7 +17,6 @@ data.dir <- scc_gen_dir #where to download the unite database to.
 
 #merge SV tables, save composite SV table.----
 d <- dada2::mergeSequenceTables(table1 = p1, table2 = p2)
-saveRDS(d,merged_SV.table_output.path)
 
 #1. download unite training set.----
 #cat('downloading UNITE database...\n')
@@ -62,16 +61,17 @@ toc()
 #merge together output of parallel assignment.
 tax <- data.frame(do.call('rbind',output.list))
 
-#remove taxa that do not assign to fungi.----
-tax <- tax[!is.na(tax$kingdom),]
-tax <- tax[tax$kingdom == 'Fungi',]
-
 #remove leading characters, push to lower case.----
 #remove leading "X__".
 for(i in 1:ncol(tax)){
   tax[,i] <- substring(tax[,i],4)
 }
 colnames(tax) <- tolower(colnames(tax))
+
+#remove taxa that do not assign to fungi.----
+tax <- tax[!is.na(tax$kingdom),]
+tax <- tax[tax$kingdom == 'Fungi',]
+
 
 #3. assign function based on FUNGuid.----
 fg <- fg_assign(tax)
@@ -91,10 +91,11 @@ fg[grep('Ectomycorrhizal', guild), fg := 'Ectomycorrhizal']
 tax$fg <- fg$fg
 
 #Subset otu table to remove non-fungi, make sure order matches.----
-otu <- otu[,colnames(otu) %in% rownames(tax)]
+d <- d[,colnames(d) %in% rownames(tax)]
 
 #4. save output.----
 saveRDS(tax, output.path)
+saveRDS(  d, merged_SV.table_output.path)
 cat('Taxonomy output saved.\n')
 
 #5. cleanup.----
