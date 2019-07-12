@@ -13,6 +13,7 @@ p1 <- readRDS(duke_exp1.p1_SV_table.path)
 p2 <- readRDS(duke_exp1.p2_SV_table.path)
 output.path <- duke_exp1_tax.fun_table.path
 merged_SV.table_output.path <- duke_exp1_SV_table_merged.path
+data.dir <- scc_gen_dir #where to download the unite database to.
 
 #merge SV tables, save composite SV table.----
 d <- dada2::mergeSequenceTables(table1 = p1, table2 = p2)
