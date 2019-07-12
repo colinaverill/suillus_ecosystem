@@ -31,7 +31,8 @@ system(cmd)
 cat('UNITE download complete.\n')
 
 #2. assign taxonomy in parallel using colin's parallel hack. Native dada2 multithread isn't working.----
-n <- detectCores()
+#n <- detectCores()
+n <- 16 #if you only request 16 and get assigned a 28 core machine this will over-allocate and process reaper shows up.
 registerDoParallel(cores=n)
 
 #set breakpoints for subsetting taxonomy list.

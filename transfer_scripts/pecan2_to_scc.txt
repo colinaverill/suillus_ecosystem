@@ -1,0 +1,2 @@
+#transferring pecan_gen on pecan to scc.
+scp -r /fs/data3/caverill/suillus_eco_data/small_data/pecan_gen/. caverill@scc1.bu.edu:/projectnb/talbot-lab-data/caverill/suillus_eco_data/small_data/pecan_gen/
