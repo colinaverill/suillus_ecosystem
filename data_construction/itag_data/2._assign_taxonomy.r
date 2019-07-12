@@ -1,15 +1,17 @@
-#assign taxonomy to tedersoo sequences.
+#assign taxonomy and function to tedersoo sequences.
 #clear environment, load packages, functions and paths.----
 rm(list=ls())
 library(doParallel)
+library(data.table)
 source('paths.r')
 source('NEFI_functions/tic_toc.r')
+source('functions/fg_assign.r')
 
 #load SV table, set output path.----
 #this needs a lot of memory.
 p1 <- readRDS(duke_exp1.p1_SV_table.path)
 p2 <- readRDS(duke_exp1.p2_SV_table.path)
-output.path <- duke_exp1_tax_table.path
+output.path <- duke_exp1_tax.fun_table.path
 merged_SV.table_output.path <- duke_exp1_SV_table_merged.path
 
 #merge SV tables, save composite SV table.----
@@ -58,12 +60,42 @@ toc()
 #merge together output of parallel assignment.
 tax <- data.frame(do.call('rbind',output.list))
 
+#remove taxa that do not assign to fungi.----
+tax <- tax[!is.na(tax$kingdom),]
+tax <- tax[tax$kingdom == 'Fungi',]
 
-#3. save output.----
+#remove leading characters, push to lower case.----
+#remove leading "X__".
+for(i in 1:ncol(tax)){
+  tax[,i] <- substring(tax[,i],4)
+}
+colnames(tax) <- tolower(colnames(tax))
+
+#3. assign function based on FUNGuid.----
+fg <- fg_assign(tax)
+
+#collapse functional assignments into a single vector for ECM, AM, SAP and pathogen.-----
+fg <- data.table(fg)
+#Assign species based on functions you want to trump other functions. 
+#For instance, if something assigns to both SAP and ECM this will have ECM override SAP.
+fg[grep('Arbuscular'     , guild), fg := 'Arbuscular'     ]
+fg[grep('Plant Pathogen' , guild), fg := 'Plant_Pathogen' ]
+fg[grep('Animal Pathogen', guild), fg := 'Animal_Pathogen']
+fg[grep('Saprotroph'     , guild), fg := 'Saprotroph'     ]
+fg[grep('Wood Saprotroph', guild), fg := 'Wood_Saprotroph']
+fg[grep('Ectomycorrhizal', guild), fg := 'Ectomycorrhizal']
+
+#append functional groups to taxonomy table.----
+tax$fg <- fg$fg
+
+#Subset otu table to remove non-fungi, make sure order matches.----
+otu <- otu[,colnames(otu) %in% rownames(tax)]
+
+#4. save output.----
 saveRDS(tax, output.path)
 cat('Taxonomy output saved.\n')
 
-#4. cleanup.----
+#5. cleanup.----
 system(paste0('rm -f ',unite_path.zip))
 system(paste0('rm -f ',unite_path))
 

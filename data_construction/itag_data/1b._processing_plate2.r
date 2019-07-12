@@ -5,7 +5,7 @@
 #require qsub script to load the following modules: R/3.4.0.
 #clear environment, load packages.
 rm(list=ls())
-#source('paths.r')
+source('paths.r')
 source('functions/tic_toc.r')
 library(data.table)
 library(dada2)

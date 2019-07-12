@@ -10,7 +10,7 @@
 #$ -pe omp 8
 #
 #Give the job a name
-#$ -N p1_filter.trim
+#$ -N p2_filter.trim
 #
 # Merge stderr into the stdout file, to reduce clutter
 #$ -j y
