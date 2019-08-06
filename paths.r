@@ -52,4 +52,6 @@ duke_2018_co2_workup.path <- paste0(dir,'duke_2018_co2_workup.rds')
     duke_exp1.p2_SV_table.path <- paste0(scc_gen_dir,'duke_exp1.p2_SV_table.rds')
 duke_exp1_SV_table_merged.path <- paste0(scc_gen_dir,'duke_exp1_SV_table_merged.rds')
   duke_exp1_tax.fun_table.path <- paste0(scc_gen_dir,'duke_exp1_tax.fun_table.rds')
+    duke_exp1_plate_1_map.path <- paste0(scc_gen_dir,'exp1_plate1_map.txt')
+    duke_exp1_plate_2_map.path <- paste0(scc_gen_dir,'exp1_plate2_map.txt')
 
