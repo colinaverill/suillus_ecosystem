@@ -1,4 +1,5 @@
-#assign taxonomy and function to tedersoo sequences.
+#assign taxonomy and function to Duke Suillus Experiment 1 sequences.
+#Taxonomy assignment takes ~41 minutes with 16 cores in parallel.
 #clear environment, load packages, functions and paths.----
 rm(list=ls())
 library(doParallel)
