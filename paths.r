@@ -53,7 +53,11 @@ duke_2018_co2_workup.path <- paste0(dir,'duke_2018_co2_workup.rds')
     duke_exp1.p2_SV_table_ITS.path <- paste0(scc_gen_dir,'duke_exp1.p2_SV_table_ITS.rds')
 duke_exp1_SV_table_merged_ITS.path <- paste0(scc_gen_dir,'duke_exp1_SV_table_merged_ITS.rds')
   duke_exp1_tax.fun_table_ITS.path <- paste0(scc_gen_dir,'duke_exp1_tax.fun_table_ITS.rds')
-
+    duke_exp1.p1_SV_table_16S.path <- paste0(scc_gen_dir,'duke_exp1.p1_SV_table_16S.rds')
+    duke_exp1.p2_SV_table_16S.path <- paste0(scc_gen_dir,'duke_exp1.p2_SV_table_16S.rds')
+duke_exp1_SV_table_merged_16S.path <- paste0(scc_gen_dir,'duke_exp1_SV_table_merged_16S.rds')
+  duke_exp1_tax.fun_table_16S.path <- paste0(scc_gen_dir,'duke_exp1_tax.fun_table_16S.rds')
+  
 #Experiment 1 big data raw itag sequence paths and mapping files direct from JGI.
  exp1.p1_rawseq.path <- paste0(big_data_dir,'itag/EctintiTagplate1/Raw_Data/')
  exp1.p2_rawseq.path <- paste0(big_data_dir,'itag/EctintiTagplate2/Raw_Data/')
