@@ -1,29 +1,33 @@
-#Constructing SV table froM Tedersoo 2014 .fastq files downloaded from the SRA.
+#Constructing SV table from Duke 2017 experiment 1- no POM addition. Plate 1.
 #quality filtering, sample inference, chimera filtering using the dada2 pipeline.
 #assign taxonomy using RDP via dada2.
-#starting with two test files.
-#require qsub script to load the following modules: R/3.4.0.
-#clear environment, load packages.
+#require qsub script to load the following modules: R
+#clear environment, load packages and functions.----
 rm(list=ls())
 source('paths.r')
 source('functions/tic_toc.r')
 library(data.table)
 library(dada2)
 
-#set input/output paths, specify primers.----
-seq.path <- '/projectnb/talbot-lab-data/caverill/suillus_eco_data/big_data/itag/EctintiTagplate1/Raw_Data/'
+#set input/output paths, load map, specify primers.----
+#seq.path <- '/projectnb/talbot-lab-data/caverill/suillus_eco_data/big_data/itag/EctintiTagplate1/Raw_Data/'
+seq.path <- exp1.p1_rawseq.path
+map <- read.table(exp1.p1_map_ITS.path)
+colnames(map) <- c('sample_ID','filename')
+map[] <- lapply(map, as.character)
+map.files <- gsub('.gz','',map$filename)
 
 #output file path.
-output_filepath1 <-  paste0(seq.path,'SV_table.rds')
-output_filepath2 <-  duke_exp1.p1_SV_table.path
-output_track     <-  paste0(seq.path,'track.rds')
+output_filepath1 <-  paste0(seq.path,'SV_table_ITS.rds')
+output_filepath2 <-  duke_exp1.p1_SV_table_ITS.path
+output_track     <-  paste0(seq.path,'track_ITS.rds')
 
 #reverse primers (there is a flex position)
 rev.primers <- 'TCCTGCGCTTATTGATATGC,TCCTCCGCTTATTGATATGC'
 #foward primers: there are 6. These are their reverse complements.
 rc.fwd.primers <- ('CAGCGTTCTTCATCGATGACGAGTCTAG,CTGCGTTCTTCATCGTTGACGAGTCTAG,CTGCGTTCTTCATCGGTGACGAGTCTAG,CTACGTTCTTCATCGATGACGAGTCTAG,CCACGTTCTTCATCGATGACGAGTCTAG,CAGCGTTCTTCATCGATGACGAGTCTAG')
 
-#unzip files if they are zipped.
+#unzip files if they are zipped.----
 fastq.files <- list.files(seq.path)
 if(sum(grepl('.gz',fastq.files) > 0)){
   cat('Unzipping .gz files...\n');tic()
@@ -32,7 +36,7 @@ if(sum(grepl('.gz',fastq.files) > 0)){
   cat('Files unzipped. ');toc()
 }
 
-#get fastq file names, only include files that end in .fastq.
+#get fastq file names, only include files that end in .fastq.----
 fastq.files <- list.files(seq.path)
 #subset for testing
 testing = F
@@ -40,6 +44,9 @@ if(testing == T){
   fastq.files <- fastq.files[1:4]
 }
 fastq.files <- fastq.files[grep('.fastq',fastq.files)]
+
+#Subset to files in particular mapping file.----
+fastq.files <- fastq.files[fastq.files %in% map.files]
 
 #you need to get rid of q.trim and filtered directories if they are left over from a previous dada2 run.
 system(paste0('rm -rf ',seq.path,'q.trim'))
@@ -153,7 +160,6 @@ seqtab.nochim <- seqtab.nochim[,nchar(colnames(seqtab.nochim)) > 99]
 
 #save output.----
 cat('Saving output...\n')
-output_filepath <- paste0(seq.path,'SV_table.rds')
 saveRDS(seqtab.nochim, output_filepath1)
 saveRDS(seqtab.nochim, output_filepath2)
 saveRDS(track        , output_track    )
