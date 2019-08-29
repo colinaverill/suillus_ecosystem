@@ -1,4 +1,4 @@
-#Constructing SV table from Duke 2017 experiment 1- no POM addition. Plate 1.
+#Constructing SV table from Duke 2017 experiment 1- no POM addition. Plate 1 - ITS.
 #quality filtering, sample inference, chimera filtering using the dada2 pipeline.
 #assign taxonomy using RDP via dada2.
 #require qsub script to load the following modules: R

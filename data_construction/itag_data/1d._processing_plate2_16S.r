@@ -1,4 +1,4 @@
-#Constructing SV table from Duke 2017 experiment 1- no POM addition. Plate 2.
+#Constructing SV table from Duke 2017 experiment 1- no POM addition. Plate 2 - 16S.
 #quality filtering, sample inference, chimera filtering using the dada2 pipeline.
 #assign taxonomy using RDP via dada2.
 #require qsub script to load the following modules: R
@@ -6,26 +6,42 @@
 rm(list=ls())
 source('paths.r')
 source('functions/tic_toc.r')
+source('functions/permute_read.r')
 library(data.table)
 library(dada2)
 
 #set input/output paths, load map, specify primers.----
 #seq.path <- '/projectnb/talbot-lab-data/caverill/suillus_eco_data/big_data/itag/EctintiTagplate2/Raw_Data/'
 seq.path <- exp1.p2_rawseq.path
-map <- read.table(exp1.p2_map_ITS.path)
+map <- read.table(exp1.p2_map_16S.path)
 colnames(map) <- c('sample_ID','filename')
 map[] <- lapply(map, as.character)
 map.files <- gsub('.gz','',map$filename)
 
 #output file path.
-output_filepath1 <-  paste0(seq.path,'SV_table_ITS.rds')
-output_filepath2 <- duke_exp1.p2_SV_table_ITS.path
-output_track     <-  paste0(seq.path,'track_ITS.rds')
+output_filepath1 <-  paste0(seq.path,'SV_table_16S.rds')
+output_filepath2 <- duke_exp1.p2_SV_table_16S.path
+output_track     <-  paste0(seq.path,'track_16S.rds')
 
+#bacterial primers from JGI:
+#Primer one at the front of reads in file, confirmed in the orientation below.
+primer.1 <- 'GTGYCAGCMGCCGCGGTAA'  #515F-Y this is the forward primer in correct orientation on "front" of read. 4 unique possible primers.
+#This is the reverse primer, which must be permuted (using custom) for flex positions and then reverse complemented.
+primer.2 <- 'CCGYCAATTYMTTTRAGTTT' #926R this is reverse primer. 16 unique possible primers.
+#permute primers 1+2.
+primer.1 <- permute_read(primer.1)
+primer.2 <- permute_read(primer.2)
+#reverse complement primer 2.
+primer.2 <- rc(primer.2)
+#collapse primers to comma separated string, compatible with bbduk.
+primer.1 <- paste(primer.1, collapse = ',')
+primer.2 <- paste(primer.2, collapse = ',')
+
+#old fungal primers
 #reverse primers (there is a flex position)
-rev.primers <- 'TCCTGCGCTTATTGATATGC,TCCTCCGCTTATTGATATGC'
+#rev.primers <- 'TCCTGCGCTTATTGATATGC,TCCTCCGCTTATTGATATGC'
 #foward primers: there are 6. These are their reverse complements.
-rc.fwd.primers <- ('CAGCGTTCTTCATCGATGACGAGTCTAG,CTGCGTTCTTCATCGTTGACGAGTCTAG,CTGCGTTCTTCATCGGTGACGAGTCTAG,CTACGTTCTTCATCGATGACGAGTCTAG,CCACGTTCTTCATCGATGACGAGTCTAG,CAGCGTTCTTCATCGATGACGAGTCTAG')
+#rc.fwd.primers <- ('CAGCGTTCTTCATCGATGACGAGTCTAG,CTGCGTTCTTCATCGTTGACGAGTCTAG,CTGCGTTCTTCATCGGTGACGAGTCTAG,CTACGTTCTTCATCGATGACGAGTCTAG,CCACGTTCTTCATCGATGACGAGTCTAG,CAGCGTTCTTCATCGATGACGAGTCTAG')
 
 #unzip files if they are zipped.----
 fastq.files <- list.files(seq.path)
@@ -38,15 +54,16 @@ if(sum(grepl('.gz',fastq.files) > 0)){
 
 #get fastq file names, only include files that end in .fastq.----
 fastq.files <- list.files(seq.path)
-#subset for testing
-testing = F
-if(testing == T){
-  fastq.files <- fastq.files[1:4]
-}
 fastq.files <- fastq.files[grep('.fastq',fastq.files)]
 
 #Subset to files in particular mapping file.----
 fastq.files <- fastq.files[fastq.files %in% map.files]
+
+#subset for testing
+testing = F
+if(testing == T){
+  fastq.files <- fastq.files[1:3]
+}
 
 #you need to get rid of q.trim and filtered directories if they are left over from a previous dada2 run.----
 system(paste0('rm -rf ',seq.path,'q.trim'))
@@ -57,9 +74,8 @@ system(paste0('rm -rf ',seq.path,'filtered'))
 #DOE has a great tool to find a primer and trim anything preceding in, called bbuk.sh in the bbmap package.
 #Find theat here: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbduk-guide/
 #I copied this indivudal script into the NEFI_tools directory.
-#This also trim 3' "forward" primer.
 for(i in 1:length(fastq.files)){
-  #quality filter fastq files using qiime.
+  #"left" trim from 5' end the forward primer, primer.1
   sample.name <- fastq.files[i]
   sample.name <- substr(sample.name,1,nchar(sample.name)-6)
   output.dir1 <- 'q.trim.L/'
@@ -67,17 +83,17 @@ for(i in 1:length(fastq.files)){
   sample.path <- paste0(seq.path,sample.name,'.fastq')
   output.path <- paste0(seq.path,output.dir1,sample.name,'.fastq')
   cmd <- paste0(bbduk.path,
-                ' literal=',rev.primers,
+                ' literal=',primer.1,
                 ' ktrim=l k=10 ',
                 'in=',sample.path,
                 ' out=',output.path,' ordered=t')
   system(cmd)
-  #now trim 3' end since all "forward" primers are 28bp long.
+  #"right" trim from 3' end reverse primer, primer.2
   output.dir2 <- 'q.trim.R/'
   sample.path <- paste0(seq.path,output.dir1,sample.name,'.fastq')
   output.path <- paste0(seq.path,output.dir2,sample.name,'.fastq')
   cmd <- paste0(bbduk.path,
-                ' literal=',rc.fwd.primers,
+                ' literal=',primer.2,
                 ' ktrim=r k=10 ',
                 'in=',sample.path,
                 ' out=',output.path,' ordered=t')
