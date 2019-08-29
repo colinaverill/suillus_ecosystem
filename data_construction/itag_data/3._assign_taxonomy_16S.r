@@ -41,7 +41,7 @@ brk <- floor(length(to_assign) / n) #floor rounds down. Important here.
 
 #use a foreach loop to do this in parallel on subsets.
 tic()
-cat('assigning taxonomy with the RDP classifier and unite training set...\n')
+cat('assigning taxonomy with the RDP classifier and taxonomy training set...\n')
 output.list <-
   foreach(i = 1:n) %dopar% {
     #tell loop where i of n taxonomy subset starts and ends.
