@@ -10,25 +10,25 @@ source('functions/fg_assign.r')
 
 #load SV table, set output path.----
 #this needs a lot of memory.
-p1 <- readRDS(duke_exp1.p1_SV_table_ITS.path)
-p2 <- readRDS(duke_exp1.p2_SV_table_ITS.path)
-output.path <- duke_exp1_tax.fun_table_ITS.path
-merged_SV.table_output.path <- duke_exp1_SV_table_merged_ITS.path
-data.dir <- scc_gen_dir #where to download the unite database to.
+p1 <- readRDS(duke_exp1.p1_SV_table_16S.path)
+p2 <- readRDS(duke_exp1.p2_SV_table_16S.path)
+output.path <- duke_exp1_tax.fun_table_16S.path
+merged_SV.table_output.path <- duke_exp1_SV_table_merged_16S.path
+data.dir <- scc_gen_dir #where to download the greengenes database to.
 
 #merge SV tables, save composite SV table.----
 d <- dada2::mergeSequenceTables(table1 = p1, table2 = p2)
 
-#1. download unite training set.----
-#cat('downloading UNITE database...\n')
-unite_url <- 'https://files.plutof.ut.ee/doi/B2/07/B2079372C79891519EF815160D4467BBF4AF1288A23E135E666BABF2C5779767.zip'
-unite_path.zip <- paste0(data.dir,'unite.fa.zip')
-unite_path     <- paste0(data.dir,'sh_general_release_dynamic_01.12.2017.fasta')
-cmd <- paste0('curl ',unite_url,' > ',unite_path.zip)
+#1. download GREENGENES training set.----
+cat('downloading taxonomic reference database...\n')
+gg_url <- 'https://zenodo.org/record/158955/files/gg_13_8_train_set_97.fa.gz?download=1'
+gg_path.zip <- paste0(data.dir,'gg.fa.gz')
+gg_path     <- paste0(data.dir,'gg.fa')
+cmd <- paste0('curl ',gg_url,' > ',gg_path.zip)
 system(cmd)
-cmd <- paste0('unzip ',unite_path.zip,' -d ',data.dir)
+cmd <- paste0('gunzip ',gg_path.zip)
 system(cmd)
-cat('UNITE download complete.\n')
+cat('Taxonomic reference database download complete.\n')
 
 #2. assign taxonomy in parallel using colin's parallel hack. Native dada2 multithread isn't working.----
 #n <- detectCores()
@@ -51,7 +51,7 @@ output.list <-
     if(i == n){end = length(to_assign)}
     
     #assign taxa
-    tax.out <- dada2::assignTaxonomy(to_assign[start:end], unite_path)
+    tax.out <- dada2::assignTaxonomy(to_assign[start:end], gg_path)
     
     #return output to list
     return(tax.out)
@@ -69,27 +69,10 @@ for(i in 1:ncol(tax)){
 }
 colnames(tax) <- tolower(colnames(tax))
 
-#remove taxa that do not assign to fungi.----
+#remove taxa that do not assign to bacteria.----
 tax <- tax[!is.na(tax$kingdom),]
-tax <- tax[tax$kingdom == 'Fungi',]
+tax <- tax[tax$kingdom == 'Bacteria',]
 
-
-#3. assign function based on FUNGuid.----
-fg <- fg_assign(tax)
-
-#collapse functional assignments into a single vector for ECM, AM, SAP and pathogen.-----
-fg <- data.table(fg)
-#Assign species based on functions you want to trump other functions. 
-#For instance, if something assigns to both SAP and ECM this will have ECM override SAP.
-fg[grep('Arbuscular'     , guild), fg := 'Arbuscular'     ]
-fg[grep('Plant Pathogen' , guild), fg := 'Plant_Pathogen' ]
-fg[grep('Animal Pathogen', guild), fg := 'Animal_Pathogen']
-fg[grep('Saprotroph'     , guild), fg := 'Saprotroph'     ]
-fg[grep('Wood Saprotroph', guild), fg := 'Wood_Saprotroph']
-fg[grep('Ectomycorrhizal', guild), fg := 'Ectomycorrhizal']
-
-#append functional groups to taxonomy table.----
-tax$fg <- fg$fg
 
 #Subset otu table to remove non-fungi, make sure order matches.----
 d <- d[,colnames(d) %in% rownames(tax)]
@@ -100,7 +83,6 @@ saveRDS(  d, merged_SV.table_output.path)
 cat('Taxonomy output saved.\n')
 
 #5. cleanup.----
-system(paste0('rm -f ',unite_path.zip))
-system(paste0('rm -f ',unite_path))
+system(paste0('rm -f ',gg_path))
 
 #end script.

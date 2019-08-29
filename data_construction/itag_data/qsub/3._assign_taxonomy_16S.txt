@@ -9,7 +9,7 @@
 #$ -l mem_per_core=8G #big memory.
 #
 #Give the job a name
-#$ -N tax_fun_ITS
+#$ -N tax_16S
 #
 # Merge stderr into the stdout file, to reduce clutter
 #$ -j y
@@ -31,7 +31,7 @@ module load R
 #
 #
 # in the directory specified above, invoke this function:
-Rscript data_construction/itag_data/2._assign_taxonomy_function_ITS.r
+Rscript data_construction/itag_data/3._assign_taxonomy_16S.r
 #
 #
 #End of commands.

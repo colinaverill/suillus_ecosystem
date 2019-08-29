@@ -20,7 +20,7 @@ map.files <- gsub('.gz','',map$filename)
 
 #output file path.
 output_filepath1 <-  paste0(seq.path,'SV_table_16S.rds')
-output_filepath2 <- duke_exp1.p2_SV_table_16S.path
+output_filepath2 <- duke_exp1.p1_SV_table_16S.path
 output_track     <-  paste0(seq.path,'track_16S.rds')
 
 #bacterial primers from JGI:
