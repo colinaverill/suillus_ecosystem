@@ -4,7 +4,7 @@ source('paths.r')
 library(MCMCglmm)
 library(lmmfit)
 
-#load data.
+#load data.----
 d <- read.csv(raw_CO2_exp.2_2018.path)
 #co2 <- readRDS(duke_2018_co2_workup.path)
 moist <- read.csv(raw_soil_moist_exp.2_2018.path)
@@ -49,7 +49,16 @@ dat <- dat[complete.cases(dat),]
 #MCMCglmm model
 mod <- MCMCglmm(resp.soil ~ resp.plant + fert  + suillus + resp.plant:suillus, random = ~Block, data = dat, pr =T)
 mod2 <- MCMCglmm(resp.soil ~ grav_moist + resp.plant + fert  + suillus + resp.plant:suillus, random = ~Block, data = dat, pr =T)
-summary(mod)
+mod3 <-MCMCglmm(log10(resp.soil) ~  log10(resp.plant)*suillus + fert, random = ~Block, data = dat, pr =T)
+summary(mod3)
+fit <- predict(mod3)
+obs <- log10(dat$resp.soil)
+plot(obs ~ fit, bty = 'l')
+lin.fit <- lm(obs ~ fit)
+abline(lin.fit, lwd = 2, lty = 3)
+abline(0,1, lwd = 2)
+rsq <- round(summary(lin.fit)$r.squared,2)
+mtext(paste0('R2=',rsq), line = -2, adj = 0.05)
 
 #plot, correcting for block and fertilization main effects.
 pars <- colMeans(mod$Sol)

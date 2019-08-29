@@ -33,6 +33,12 @@ d$resp <- (d$ppm.CO2_final - d$ppm.CO2_intial) / d$duration
 d$resp.soil <- d$resp * d$f.soil
 d$resp.plant <- d$resp * d$f.plant
 
+#remove observations where fraction is greater than 1 or flux is negative.----
+d$resp.soil  <- ifelse(d$f.soil     > 1, NA, d$resp.soil )
+d$resp.plant <- ifelse(d$f.plant    > 1, NA, d$resp.plant)
+d$resp.soil  <- ifelse(d$resp.soil  < 0, NA, d$resp.soil )
+d$resp.plant <- ifelse(d$resp.plant < 0, NA, d$resp.plant)
+
 #format and save output.----
 out <- d[,c('ID','Block','suillus','fert','f.soil','f.plant','d13C_accumulated','resp','resp.soil','resp.plant')]
 saveRDS(out, output.path)

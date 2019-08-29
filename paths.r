@@ -48,6 +48,13 @@ duke_2017_exp2_nh4_ppmN.path <- paste0(dir,'Duke_Exp2_nh4ppm.csv')
 dir <- paste0(pecan_gen_dir,'exp.2_processed.dat/')
 system(paste0('mkdir -p ',dir))
 duke_2018_co2_workup.path <- paste0(dir,'duke_2018_co2_workup.rds')
+duke_2018_to_analyze.path <- paste0(dir,'duke_2018_to_analyze.rds')
+
+#Duke Exp 1 2017 analysis data.----
+exp1_linear_analysis.path <- paste0(dir,'exp1_linear_analysis.rds')
+
+#Duke Exp 2 2018 analysis data.----
+exp2_linear_analysis.path <- paste0(dir,'exp2_linear_analysis.rds')
 
 #Duke 2017 Experiment 1 itag data.----
 #Experiment 1 processed itag sequence files.
