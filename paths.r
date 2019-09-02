@@ -34,6 +34,7 @@ system(paste0('mkdir -p ',  scc_gen_dir))
 dir <- paste0(raw_data_dir,'exp.1_raw/')
 system(paste0('mkdir -p ',dir))
 Duke_2017_EMxN_master.path <- paste0(dir,'Duke_2017_EMxN_master.csv')
+Duke_2017_exp1_root.mass.path <- paste0(dir,'Dukeroot.mass_exp1_2017.csv')
 
 #duke 2018 experiment 2 raw data.----
 dir <- paste0(raw_data_dir,'exp.2_raw/')
@@ -41,8 +42,9 @@ system(paste0('mkdir -p ',dir))
 raw_CO2_exp.2_2018.path <- paste0(dir,'gas_13C_workup.csv')
 raw_soil_moist_exp.2_2018.path <- paste0(dir,'soil_moist_Duke_Dec2018.csv')
 exp2_available_EMSL_tubes.path <- paste0(dir,'available_EMSL_tubes.csv')
-duke_2017_exp2_no3_ppmN.path <- paste0(dir,'Duke_Exp2_no3ppm.csv')
-duke_2017_exp2_nh4_ppmN.path <- paste0(dir,'Duke_Exp2_nh4ppm.csv')
+duke_2017_exp2_no3_ppmN.path <- paste0(dir,'Duke_Exp2_no3ppm.csv') #Change this to 2018, yes?
+duke_2017_exp2_nh4_ppmN.path <- paste0(dir,'Duke_Exp2_nh4ppm.csv') #Change this to 2018, yes?
+duke_2018_exp2_biomass_n.trees.path <- paste0(dir,'biomass_n.trees_exp2_2018.csv')
 
 #duke 2018 experiment 2 processed data.----
 dir <- paste0(pecan_gen_dir,'exp.2_processed.dat/')
