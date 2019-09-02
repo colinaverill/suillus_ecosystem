@@ -36,6 +36,9 @@ system(paste0('mkdir -p ',dir))
 Duke_2017_EMxN_master.path <- paste0(dir,'Duke_2017_EMxN_master.csv')
 Duke_2017_exp1_root.mass.path <- paste0(dir,'Dukeroot.mass_exp1_2017.csv')
 
+#Duke 2017 experiment 1 processed data.----
+Duke_2017_exp1_to_analyze.path <- paste0(dir,'duke_2017_exp1_to_analyze.rds')
+
 #duke 2018 experiment 2 raw data.----
 dir <- paste0(raw_data_dir,'exp.2_raw/')
 system(paste0('mkdir -p ',dir))
@@ -68,7 +71,10 @@ duke_exp1_SV_table_merged_ITS.path <- paste0(scc_gen_dir,'duke_exp1_SV_table_mer
     duke_exp1.p2_SV_table_16S.path <- paste0(scc_gen_dir,'duke_exp1.p2_SV_table_16S.rds')
 duke_exp1_SV_table_merged_16S.path <- paste0(scc_gen_dir,'duke_exp1_SV_table_merged_16S.rds')
   duke_exp1_tax.fun_table_16S.path <- paste0(scc_gen_dir,'duke_exp1_tax.fun_table_16S.rds')
-
+           duke_exp1_16S_rare.path <- paste0(scc_gen_dir,'duke_exp1_16S_rare.rds')
+           duke_exp1_ITS_rare.path <- paste0(scc_gen_dir,'duke_exp1_ITS_rare.rds')
+  duke_exp1_fungi_r.abundance.path <- paste0(scc_gen_dir,'duke_exp1_fungi_r.abundance.rds')
+  
 #Experiment 1 big data raw itag sequence paths and mapping files direct from JGI.
  exp1.p1_rawseq.path <- paste0(big_data_dir,'itag/EctintiTagplate1/Raw_Data/')
  exp1.p2_rawseq.path <- paste0(big_data_dir,'itag/EctintiTagplate2/Raw_Data/')

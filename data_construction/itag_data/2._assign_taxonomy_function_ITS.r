@@ -114,7 +114,7 @@ tax$fg <- fg$fg
 d <- d[,colnames(d) %in% rownames(tax)]
 
 #4. save output.----
-saveRDS(tax, output.path)
+saveRDS(tax, tax.fun_output.path)
 saveRDS(  d, merged_SV.table_output.path)
 cat('Taxonomy output saved.\n')
 
