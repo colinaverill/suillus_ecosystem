@@ -8,16 +8,35 @@ source('paths.r')
 source('functions/tic_toc.r')
 source('functions/fg_assign.r')
 
-#load SV table, set output path.----
+#set output paths.----
+tax.fun_output.path <- duke_exp1_tax.fun_table_ITS.path
+merged_SV.table_output.path <- duke_exp1_SV_table_merged_ITS.path
+
+#load SV tables, mapping files, set directory to download taxonomy ref database to.----
 #this needs a lot of memory.
 p1 <- readRDS(duke_exp1.p1_SV_table_ITS.path)
 p2 <- readRDS(duke_exp1.p2_SV_table_ITS.path)
-output.path <- duke_exp1_tax.fun_table_ITS.path
-merged_SV.table_output.path <- duke_exp1_SV_table_merged_ITS.path
 data.dir <- scc_gen_dir #where to download the unite database to.
+map1 <- read.table(exp1.p1_map_ITS.path)
+map2 <- read.table(exp1.p2_map_ITS.path)
 
-#merge SV tables, save composite SV table.----
+#merge SV tables.----
 d <- dada2::mergeSequenceTables(table1 = p1, table2 = p2)
+
+#translate SV rownames to experiment IDs using mapping file.----
+map <- rbind(map1, map2)
+colnames(map) <- c('ID','path')
+map[,] <- lapply(map[,], as.character)
+map$ID <- gsub('_iTag','',map$ID)
+map$ID <- gsub('S','',map$ID)
+map$path <- gsub('.fastq.gz','',map$path)
+if(sum(rownames(d) %in% map$path) != nrow(d)){
+  warning('Not all row names of SV table are present in mapping file.\n')
+}
+#rename rows of SV table to be experiment IDs.
+map <- map[map$path %in% rownames(d),]
+map <- map[order(match(map$path,rownames(d))),]
+rownames(d) <- map$ID
 
 #1. download unite training set.----
 #cat('downloading UNITE database...\n')

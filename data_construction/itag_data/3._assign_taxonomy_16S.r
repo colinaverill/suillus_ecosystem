@@ -8,16 +8,35 @@ source('paths.r')
 source('functions/tic_toc.r')
 source('functions/fg_assign.r')
 
-#load SV table, set output path.----
+#set output paths.----
+output.path <- duke_exp1_tax.fun_table_16S.path
+merged_SV.table_output.path <- duke_exp1_SV_table_merged_16S.path
+
+#load SV table and mapping files, set save directory for taxonomy reference file.----
 #this needs a lot of memory.
 p1 <- readRDS(duke_exp1.p1_SV_table_16S.path)
 p2 <- readRDS(duke_exp1.p2_SV_table_16S.path)
-output.path <- duke_exp1_tax.fun_table_16S.path
-merged_SV.table_output.path <- duke_exp1_SV_table_merged_16S.path
 data.dir <- scc_gen_dir #where to download the greengenes database to.
+map1 <- read.table(exp1.p1_map_16S.path)
+map2 <- read.table(exp1.p2_map_16S.path)
 
 #merge SV tables, save composite SV table.----
 d <- dada2::mergeSequenceTables(table1 = p1, table2 = p2)
+
+#translate SV rownames to experiment IDs using mapping file.----
+map <- rbind(map1, map2)
+colnames(map) <- c('ID','path')
+map[,] <- lapply(map[,], as.character)
+map$ID <- gsub('_iTag','',map$ID)
+map$ID <- gsub('S','',map$ID)
+map$path <- gsub('.fastq.gz','',map$path)
+if(sum(rownames(d) %in% map$path) != nrow(d)){
+  warning('Not all row names of SV table are present in mapping file.\n')
+}
+#rename rows of SV table to be experiment IDs.
+map <- map[map$path %in% rownames(d),]
+map <- map[order(match(map$path,rownames(d))),]
+rownames(d) <- map$ID
 
 #1. download GREENGENES training set.----
 cat('downloading taxonomic reference database...\n')
