@@ -26,11 +26,12 @@ d.rel.16S  <- d.rare.16S/rowSums(d.rare.16S)
 suillus.seq <- rownames(tax[grep('Suillus'        , tax$genus),])
     ecm.seq <- rownames(tax[grep('Ectomycorrhizal',tax$fg)    ,])
     sap.seq <- rownames(tax[grep('Saprotrop',tax$fg)    ,])
-suillus     <- rowSums(d.rel.ITS[,colnames(d.rel.ITS) %in% suillus.seq])
-ecm         <- rowSums(d.rel.ITS[,colnames(d.rel.ITS) %in%     ecm.seq])
-sap         <- rowSums(d.rel.ITS[,colnames(d.rel.ITS) %in%     sap.seq])
-group.bin <- data.frame(names(suillus),suillus,ecm,sap)
+suillus.f   <- rowSums(d.rel.ITS[,colnames(d.rel.ITS) %in% suillus.seq])
+ecm.f       <- rowSums(d.rel.ITS[,colnames(d.rel.ITS) %in%     ecm.seq])
+sap.f       <- rowSums(d.rel.ITS[,colnames(d.rel.ITS) %in%     sap.seq])
+group.bin <- data.frame(names(suillus.f),suillus.f,ecm.f,sap.f)
 colnames(group.bin)[1] <- 'ID'
+group.bin$ID <- as.integer(group.bin$ID)
 
 #Save output.----
 saveRDS(d.rare.ITS, output_ITS_rare.path)

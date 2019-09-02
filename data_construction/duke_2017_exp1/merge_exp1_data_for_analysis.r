@@ -8,7 +8,7 @@ output.path <- Duke_2017_exp1_to_analyze.path
 #load data.----
 d <- read.csv(Duke_2017_EMxN_master.path)
 root <- read.csv(Duke_2017_exp1_root.mass.path)
-fungi <- readRDS(output_fungal_group.path)
+fungi <- readRDS(duke_exp1_fungi_r.abundance.path)
 
 
 #merge root data in.----
