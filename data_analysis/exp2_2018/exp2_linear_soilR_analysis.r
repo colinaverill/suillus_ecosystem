@@ -1,4 +1,4 @@
-#Experiment 1- Fitting MCMCglmm linear model, removing block effects, saving adjusted data and model for plotting.
+#Experiment 2- Fitting MCMCglmm linear model, removing block effects, saving adjusted data and model for plotting.
 #Also saving nls fits to adjusted data.
 #Eventually I will write a mixed effects nonlinear model, and the non-linear lines will be based on the full model fit, after detrending for fert and block.
 #clear environment, load packages.----

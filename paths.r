@@ -57,9 +57,11 @@ duke_2018_to_analyze.path <- paste0(dir,'duke_2018_to_analyze.rds')
 
 #Duke Exp 1 2017 analysis data.----
 exp1_linear_analysis.path <- paste0(dir,'exp1_linear_analysis.rds')
+exp1_linear_analysis_aboveground.path <- paste0(dir,'exp1_linear_analysis_aboveground.rds')
 
 #Duke Exp 2 2018 analysis data.----
 exp2_linear_analysis.path <- paste0(dir,'exp2_linear_analysis.rds')
+exp2_linear_analysis_aboveground.path <- paste0(dir,'exp2_linear_analysis_aboveground.rds')
 
 #Duke 2017 Experiment 1 itag data.----
 #Experiment 1 processed itag sequence files.
