@@ -3,15 +3,19 @@
 rm(list=ls())
 source('paths.r')
 
+#set output path.----
+output.path <- duke_2018_nitrogen_workup.path
+
 #Load raw data.----
 #load ppm-N data.
-no3 <- read.csv(duke_2017_exp2_no3_ppmN.path)
-nh4 <- read.csv(duke_2017_exp2_nh4_ppmN.path)
+no3 <- read.csv(duke_2018_exp2_no3_ppmN.path)
+nh4 <- read.csv(duke_2018_exp2_nh4_ppmN.path)
 no3$sample_type <- as.character(no3$sample_type)
 nh4$sample_type <- as.character(nh4$sample_type)
 #load data on water content.
 water <- read.csv(raw_soil_moist_exp.2_2018.path)
 #load soil masses used to extract.
+mass <- read.csv(duke_2018_exp2_assay_masses.path)
 
 #Order Ni/Nf observations, blank correct.----
 #NO3
@@ -51,3 +55,16 @@ nh4.Nf$ppmN <- ifelse(nh4.Nf$ppmN < 0, 0, nh4.Nf$ppmN)
 #concentration * extraction volume / (g soil extracted * fraction soil dry) = ug N / g soil.
 #extraction volume in mL.
 extraction_volume <- 40
+no3.Ni.gsoil <- no3.Ni$ppmN*extraction_volume * mass$Ni_Ci.mass * water$soil_frac
+nh4.Ni.gsoil <- nh4.Ni$ppmN*extraction_volume * mass$Ni_Ci.mass * water$soil_frac
+no3.Nf.gsoil <- no3.Nf$ppmN*extraction_volume * mass$Ni_Ci.mass * water$soil_frac
+nh4.Nf.gsoil <- nh4.Nf$ppmN*extraction_volume * mass$Ni_Ci.mass * water$soil_frac
+Nmin         <- (no3.Nf.gsoil + nh4.Nf.gsoil) - (no3.Ni.gsoil + nh4.Ni.gsoil)
+
+#Get together data as data.frame.----
+ID <- c(1:120)
+out <- data.frame(ID, no3.Ni.gsoil, nh4.Ni.gsoil, no3.Nf.gsoil, nh4.Nf.gsoil, Nmin)
+colnames(out) <- c('ID','no3','nh4','no3.final','nh4.final','Nmin')
+
+#save output, end script.----
+saveRDS(out, output.path)

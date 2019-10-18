@@ -10,10 +10,14 @@ output.path <- duke_2018_to_analyze.path
 co2 <- readRDS(duke_2018_co2_workup.path)
 moist <- read.csv(raw_soil_moist_exp.2_2018.path)
 mass  <- read.csv(duke_2018_exp2_biomass_n.trees.path)
+enz   <- read.csv(duke_2018_exp2_enzymes.path)
+nitrogen <- readRDS(duke_2018_nitrogen_workup.path)
 
 #merge.----
 out <- merge(co2[,c('ID','Block','suillus','fert','resp.soil','resp.plant')], moist[,c('ID','grav_moist')], by = 'ID', all = T)
 out <- merge(out, mass, by = 'ID', all = T)
+out <- merge(out, nitrogen[,c('ID','no3','nh4','Nmin')], by = 'ID', all = T)
+out <- merge(out, enz, by = 'ID', all = T)
 
 #Rename and recode some variables.----
 out <- data.table(out)
