@@ -11,6 +11,7 @@ host <- system('hostname', intern=T)
 data.dir <- '/projectnb/talbot-lab-data/caverill/suillus_eco_data/'
 #conditional data directory assignment.
 if(host == 'pecan2'){data.dir <- '/fs/data3/caverill/suillus_eco_data/'}
+if(host == 'Colins-MBP-2'){data.dir <- '/Users/colin/Desktop/suillus_eco_data/'}
 #make directory if it doesn't exist
 cmd <- paste0('mkdir -p ',data.dir)
 system(cmd)
@@ -45,21 +46,27 @@ system(paste0('mkdir -p ',dir))
 raw_CO2_exp.2_2018.path <- paste0(dir,'gas_13C_workup.csv')
 raw_soil_moist_exp.2_2018.path <- paste0(dir,'soil_moist_Duke_Dec2018.csv')
 exp2_available_EMSL_tubes.path <- paste0(dir,'available_EMSL_tubes.csv')
-duke_2017_exp2_no3_ppmN.path <- paste0(dir,'Duke_Exp2_no3ppm.csv') #Change this to 2018, yes?
-duke_2017_exp2_nh4_ppmN.path <- paste0(dir,'Duke_Exp2_nh4ppm.csv') #Change this to 2018, yes?
+duke_2018_exp2_no3_ppmN.path <- paste0(dir,'Duke_Exp2_no3ppm.csv')
+duke_2018_exp2_nh4_ppmN.path <- paste0(dir,'Duke_Exp2_nh4ppm.csv')
 duke_2018_exp2_biomass_n.trees.path <- paste0(dir,'biomass_n.trees_exp2_2018.csv')
+duke_2018_exp2_enzymes.path <- paste0(dir,'all_enzymes_exp2_final.csv')
+duke_2018_exp2_assay_masses.path <- paste0(dir,'assay_masses_exp2_dec_2018.csv')
 
 #duke 2018 experiment 2 processed data.----
 dir <- paste0(pecan_gen_dir,'exp.2_processed.dat/')
 system(paste0('mkdir -p ',dir))
-duke_2018_co2_workup.path <- paste0(dir,'duke_2018_co2_workup.rds')
-duke_2018_to_analyze.path <- paste0(dir,'duke_2018_to_analyze.rds')
+     duke_2018_co2_workup.path <- paste0(dir,'duke_2018_co2_workup.rds')
+duke_2018_nitrogen_workup.path <- paste0(dir,'duke_2018_nitrogen_workup.rds')
+     duke_2018_to_analyze.path <- paste0(dir,'duke_2018_to_analyze.rds')
+
 
 #Duke Exp 1 2017 analysis data.----
 exp1_linear_analysis.path <- paste0(dir,'exp1_linear_analysis.rds')
+exp1_linear_analysis_aboveground.path <- paste0(dir,'exp1_linear_analysis_aboveground.rds')
 
 #Duke Exp 2 2018 analysis data.----
 exp2_linear_analysis.path <- paste0(dir,'exp2_linear_analysis.rds')
+exp2_linear_analysis_aboveground.path <- paste0(dir,'exp2_linear_analysis_aboveground.rds')
 
 #Duke 2017 Experiment 1 itag data.----
 #Experiment 1 processed itag sequence files.
