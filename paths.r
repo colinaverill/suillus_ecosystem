@@ -52,6 +52,14 @@ duke_2018_exp2_biomass_n.trees.path <- paste0(dir,'biomass_n.trees_exp2_2018.csv
 duke_2018_exp2_enzymes.path <- paste0(dir,'all_enzymes_exp2_final.csv')
 duke_2018_exp2_assay_masses.path <- paste0(dir,'assay_masses_exp2_dec_2018.csv')
 
+#duke 2020 experiment 3 raw data.----
+dir <- paste0(raw_data_dir,'exp.3_raw/')
+system(paste0('mkdir -p ',dir))
+       raw_CO2_obs1_exp.3_2020.path <- paste0(dir,'13C_co2_data_duke_Jan_2020.csv')
+samp_times_CO2_obs1_exp.3_2020.path <- paste0(dir,'Duke_experiment_3_gas_sampling_1_times.csv')
+       raw_CO2_obs2_exp.3_2020.path <- paste0(dir,'suillus_exp3_gas.sampling.2_d13C.ppmC.csv')
+samp_times_co2_obs2_exp.3_2020.path <- paste0(dir,'suillus_exp3_gas.sampling.2_timepoints.csv')
+
 #duke 2018 experiment 2 processed data.----
 dir <- paste0(pecan_gen_dir,'exp.2_processed.dat/')
 system(paste0('mkdir -p ',dir))
@@ -59,14 +67,21 @@ system(paste0('mkdir -p ',dir))
 duke_2018_nitrogen_workup.path <- paste0(dir,'duke_2018_nitrogen_workup.rds')
      duke_2018_to_analyze.path <- paste0(dir,'duke_2018_to_analyze.rds')
 
+#Duke Exp 2 2018 analysis data.----
+exp2_linear_analysis.path <- paste0(dir,'exp2_linear_analysis.rds')
+exp2_linear_analysis_aboveground.path <- paste0(dir,'exp2_linear_analysis_aboveground.rds')
+     
+
+#duke 2020 experiment 3 processed data.----
+dir <- paste0(pecan_gen_dir,'exp.3_processed.dat/')
+system(paste0('mkdir -p ',dir))
+duke_2020_exp3_obs1_co2_workup.path <- paste0(dir,'duke_2020_exp3_obs1_co2_workup.rds')     
+duke_2020_exp3_obs2_co2_workup.path <- paste0(dir,'duke_2020_exp3_obs2_co2_workup.rds')     
 
 #Duke Exp 1 2017 analysis data.----
 exp1_linear_analysis.path <- paste0(dir,'exp1_linear_analysis.rds')
 exp1_linear_analysis_aboveground.path <- paste0(dir,'exp1_linear_analysis_aboveground.rds')
 
-#Duke Exp 2 2018 analysis data.----
-exp2_linear_analysis.path <- paste0(dir,'exp2_linear_analysis.rds')
-exp2_linear_analysis_aboveground.path <- paste0(dir,'exp2_linear_analysis_aboveground.rds')
 
 #Duke 2017 Experiment 1 itag data.----
 #Experiment 1 processed itag sequence files.
