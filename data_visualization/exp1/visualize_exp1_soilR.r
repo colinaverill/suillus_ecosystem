@@ -42,7 +42,7 @@ diff.lo <- diff.mu - diff.se
 diff.hi <- diff.mu + diff.se
 
 #save line.----
-png('exp1_plot.png',width = 10, height = 5, units = 'in', res = 300)
+png('figures_csvs/exp1_plot.png',width = 10, height = 5, units = 'in', res = 300)
 
 #Plot soil respiration results.----
 limy <- c(min(lo95)*0.95 , max(hi95)*1.05)
@@ -52,7 +52,8 @@ par(mfrow = c(1,2),
     mar = c(4,5,4,1))
 plot(mu, ylim = limy, pch = pch.code, xlab = NA, ylab = NA, xaxt='n', bty = 'l')
 mtext('Soil Derived Respiration', side=2, line=3.5, cex = o.cex)
-mtext( expression(mu*'g C * h'^-1*''), side = 2, line=2, cex = 1)
+mtext( expression('mg C * h'^-1*''), side = 2, line=2, cex = 1)
+#mtext( expression(mu*'g C * h'^-1*''), side = 2, line=2, cex = 1) #when units were micrograms.
 arrows(c(1:8), lo95, c(1:8), hi95, length=0.05, angle=90, code=3)
 abline(v = 2.5, lty = 2)
 abline(v = 4.5, lty = 2)

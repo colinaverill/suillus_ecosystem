@@ -6,14 +6,14 @@ rm(list=ls())
 source('paths.r')
 library(nlme)
 library(data.table)
-library(lmmfit)
+#library(lmmfit)
 library(MCMCglmm)
 
 #set output path.----
 output.path <- exp1_linear_analysis.path
 
 #load data.----
-d <- read.csv(Duke_2017_EMxN_master.path)
+d <- readRDS(Duke_2017_exp1_to_analyze.path)
 d <- data.table(d)
 
 #remove anything where the fraction that is plant or soil is >1.-----
@@ -22,19 +22,17 @@ d <- d[!(d$plant_fracation > 1),]
 d <- d[!(d$soil_fraction   > 1),]
 
 #grab complete cases----
-d.fig <- d[,.(n.trees,plant_ugC_h,soil_ugC_h,suillus_adj,fert,above_mass,grav_moist, Block)]
+d.fig <- d[,.(n.trees,plant.resp,soil.resp,suillus_adj,fert,above_mass,grav_moist, Block)]
 d.fig <- d.fig[complete.cases(d.fig),]
 #remove an extremely low soil-CO2-respiration outlier
-d.fig <- d.fig[soil_ugC_h > 10,]
+d.fig <- d.fig[soil.resp > .01,]
 
-#harmonize data names.----
+#Some pots had suillus that should not have according to the original design. Update treatment codes.----
 d.fig$suillus <- ifelse(d.fig$suillus_adj == 'yes',1, 0)
 d.fig$suillus_adj <- NULL
-colnames(d.fig)[grepl('plant_ugC_h',colnames(d.fig))] <- 'plant.resp'
-colnames(d.fig)[grepl( 'soil_ugC_h',colnames(d.fig))] <-  'soil.resp'
 
 #Fit model.----
-mod <- MCMCglmm(log10(soil.resp) ~ fert * suillus + log10(plant.resp) + n.trees + above_mass, random = ~Block, data = d.fig, pr = T)
+#mod <- MCMCglmm(log10(soil.resp) ~ fert * suillus + log10(plant.resp) + n.trees + above_mass, random = ~Block, data = d.fig, pr = T)
 mod <- MCMCglmm(log10(soil.resp) ~ fert * suillus + log10(plant.resp), random = ~Block, data = d.fig, pr = T)
 
 #Show this model fits reasonably well. However, we still need to get that non-linearity in there.
@@ -65,7 +63,7 @@ pars <- pars[names(pars) %in% colnames(plot.dat)]
 pars <- pars[match(colnames(plot.dat),names(pars))]
 adjust <- as.matrix(plot.dat) %*% pars
 #add back in the mean number of trees, plant repiration and above_mass.
-ref.dat <- plot.dat[,c('n.trees','log10(plant.resp)','above_mass')]
+#ref.dat <- plot.dat[,c('n.trees','log10(plant.resp)','above_mass')]
 grab <- c('log10(plant.resp)')
 ref.dat <- data.frame(plot.dat[,grab])
 colnames(ref.dat) <- grab
