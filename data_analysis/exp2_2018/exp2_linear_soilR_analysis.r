@@ -65,7 +65,7 @@ d.sub$soil.resp.adj <- d.sub$soil.resp.adj + c(ref.norm)
 #compare soil respiration values before and after accounting for block effects. Pretty correlated.
 plot(d.sub$soil.resp.adj ~ log10(d.sub$soil.resp));abline(0,1)
 
-#Summarize results.
+#Summarize detrended results.
 d.sub$treatment <- paste0(d.sub$suillus,d.sub$fert)
 mu <- aggregate(soil.resp.adj ~ suillus*fert, data = d.sub, FUN = mean  )
 std.dev <- aggregate(soil.resp.adj ~ suillus*fert, data = d.sub, FUN = sd    )
