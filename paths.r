@@ -10,8 +10,10 @@ host <- system('hostname', intern=T)
 #data directory conditional to which computer you are working on - default geo/scc.
 data.dir <- '/projectnb/talbot-lab-data/caverill/suillus_eco_data/'
 #conditional data directory assignment.
-if(host == 'pecan2'){data.dir <- '/fs/data3/caverill/suillus_eco_data/'}
-if(host == 'Colins-MBP-2'){data.dir <- '/Users/colin/Desktop/suillus_eco_data/'}
+#if(host == 'pecan2'){data.dir <- '/fs/data3/caverill/suillus_eco_data/'}
+#if(host == 'Colins-MBP-2'){data.dir <- '/Users/colin/Desktop/suillus_eco_data/'}
+#If you're not on pecan, geo or scc, you're on your local machine.
+if(host != 'pecan2' & grepl('scc',host)==F & grepl('geo',host)==F){data.dir <- '/Users/colinaverill/Documents/data_storage/suillus_eco_data/'}
 #make directory if it doesn't exist
 cmd <- paste0('mkdir -p ',data.dir)
 system(cmd)
