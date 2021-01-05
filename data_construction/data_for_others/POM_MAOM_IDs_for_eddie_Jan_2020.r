@@ -25,7 +25,7 @@ d1$treatment <- paste0(d1$fert,'_',d1$suillus)
 d2$treatment <- paste0(d2$fert,'_',d2$suillus)
 
 #Make sure everything has complete plant and soil respiration fluxes and biomass.----
-d1.check <- d1[,c('ID','Block','suillus','fert','plant_ugC_h','soil_ugC_h','above_mass','treatment')]
+d1.check <- d1[,c('ID','Block','suillus','fert','plant.resp','soil.resp','above_mass','treatment')]
 d1.check <- d1.check[complete.cases(d1.check),]
 d2.check <- d2[,c('ID','Block','suillus','fert','plant.resp','soil.resp','above_mass','treatment')]
 d2.check <- d2.check[complete.cases(d2.check),]
@@ -42,6 +42,8 @@ for(i in 1:length(treatments)){
 }
 d1.sub <- data.frame(do.call(rbind, d1.sub))
 d1.sub$experiment <- 'exp_1'
+d1.sub <- d1.sub[order(d1.sub$ID),]
+
 #subset d2.
 d2.sub <- list()
 treatments <- unique(d2.check$treatment)
@@ -52,6 +54,7 @@ for(i in 1:length(treatments)){
 }
 d2.sub <- data.frame(do.call(rbind, d2.sub))
 d2.sub$experiment <- 'exp_2'
+d2.sub <- d2.sub[order(d2.sub$ID),]
 
 #Wrap together for final .csv output.----
 d1.sub <- d1.sub[,c('experiment','ID','treatment')]
