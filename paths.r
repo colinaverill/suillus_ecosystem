@@ -38,6 +38,10 @@ dir <- paste0(raw_data_dir,'exp.1_raw/')
 system(paste0('mkdir -p ',dir))
 Duke_2017_EMxN_master.path <- paste0(dir,'Duke_2017_EMxN_master.csv')
 Duke_2017_exp1_root.mass.path <- paste0(dir,'Dukeroot.mass_exp1_2017.csv')
+Exp1_2017_bulk.soil_isotope_data.path <- paste0(dir,'Exp1_2017_bulk.soil_isotope_data.csv')
+
+#proteomics.
+exp1_proteomics.path <- paste0(dir,'Proteins.Exp1.merged.zeros.csv')
 
 #Duke 2017 experiment 1 processed data.----
 Duke_2017_exp1_to_analyze.path <- paste0(dir,'duke_2017_exp1_to_analyze.rds')
@@ -53,6 +57,7 @@ duke_2018_exp2_nh4_ppmN.path <- paste0(dir,'Duke_Exp2_nh4ppm.csv')
 duke_2018_exp2_biomass_n.trees.path <- paste0(dir,'biomass_n.trees_exp2_2018.csv')
 duke_2018_exp2_enzymes.path <- paste0(dir,'all_enzymes_exp2_final.csv')
 duke_2018_exp2_assay_masses.path <- paste0(dir,'assay_masses_exp2_dec_2018.csv')
+Exp2_2018_bulk.soil_isotope_data.path <- paste0(dir,'Exp2_2018_bulk.soil_isotope_data.csv')
 
 #duke 2020 experiment 3 raw data.----
 dir <- paste0(raw_data_dir,'exp.3_raw/')

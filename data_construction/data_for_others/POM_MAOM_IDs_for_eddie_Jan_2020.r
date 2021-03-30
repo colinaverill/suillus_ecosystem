@@ -3,7 +3,7 @@ rm(list=ls())
 source('paths.r')
 
 #output path.----
-output.path <- 'POM_MAOM_IDs_for_Eddie_Jan_2020.csv'
+output.path <- 'figures_csvs/POM_MAOM_IDs_for_Eddie_Jan_2020.csv'
 
 #set RNG seed.----
 set.seed(42069)
@@ -29,6 +29,9 @@ d1.check <- d1[,c('ID','Block','suillus','fert','plant.resp','soil.resp','above_
 d1.check <- d1.check[complete.cases(d1.check),]
 d2.check <- d2[,c('ID','Block','suillus','fert','plant.resp','soil.resp','above_mass','treatment')]
 d2.check <- d2.check[complete.cases(d2.check),]
+
+#Drop samples 5 & 85 from exp 2. They are missing or empty envelopes on Eddie's end.----
+d2.check <- d2.check[!(d2.check$ID %in% c(5,85)),]
 
 #randomly grab 10 of each treatment per data set.----
 #subset d1.
